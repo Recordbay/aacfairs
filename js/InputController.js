@@ -88,7 +88,7 @@ document.addEventListener("pointerdown", event => {
         console.log(event.target.id)
         StationNameCliked(event)
         toFirstQuestion()
-
+        closeOverlayBlockers()
     }
     //Stations UI Button Click
     else if (stationsUIBtn.includes(event.target.id)) {
