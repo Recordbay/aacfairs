@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Henkel: Virtual Showroom</title>
+    <!-- Style-->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/loading_style.css">
+    <link rel="stylesheet" href="css/overlay.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- gsap animationnn-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://cdn.babylonjs.com/cannon.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
+<body style="display: flex;">
+    <div id="nav-bar" style="width: auto; position: relative;">
+        <div id="trueWidth" style="position: relative; user-select: auto; width: 300px; height: 100%; max-width: 200px; 
+        min-width: 150px; min-height: 100%; box-sizing: border-box; background-color: #E1000F; ">
+            <div id="header" style="text-align: center;display: block;">
+                <img id="logo-navbar" src="assets/ui/HENKEL_LogoFilled_Red_sRGB.png"
+                    style="padding-top:15%; height: 35%; width: 35%;">
+            </div>
+            <div id="menupoints">
+                <div class="menu-group hasCam" style="margin-top:120px">
+                    <div>
+                        <img src="assets/ui/home_nav.png" class="menupoint-icon"></img>
+                    </div>
+                    <p id="go-4" class="menupoint-text">LOBBY</p>
+                </div>
+                <div class="menu-group p-1">
+                    <div>
+                        <img src="assets/ui/Expo.png" class="menupoint-icon"></img>
+                    </div>
+                    <p id="expo" class="menupoint-text">EXPO</p>
+                </div>
+                <div class="menu-group c-1 hidden-box hasCam">
+                    <p id="go-0" class="menupoint-text sub">DISPLAY SOLUTIONS</p>
+                </div>
+                <div class="menu-group c-1 hidden-box hasCam">
+                    <p id="go-1" class="menupoint-text sub">E-MOBILITY SOLUTIONS</p>
+                </div>
+                <div class="menu-group hasCam">
+                    <div>
+                        <img src="assets/ui/Stage.png" class="menupoint-icon"></img>
+                    </div>
+                    <p id="go-2" class="menupoint-text">STAGE</p>
+                </div>
+                <div class="menu-group hasCam">
+                    <div>
+                        <img src="assets/ui/Market_Segments.png" class="menupoint-icon"></img>
+                    </div>
+                    <p id="go-3" class="menupoint-text">MARKET SEGMENTS</p>
+                </div>
+                <div class="menu-group p-3">
+                    <div>
+                        <img src="assets/ui/network.png" class="menupoint-icon"></img>
+                    </div>
+                    <p class="menupoint-text">NETWORKING</p>
+                </div>
+                <div class="menu-group c-3 hidden-box">
+                    <p class="menupoint-text sub">CHAT</p>
+                </div>
+                <div class="menu-group c-3 hidden-box">
+                    <p class="menupoint-text sub">BREAKOUT ROOM</p>
+                </div>
+                <div class="menu-group">
+                    <div>
+                        <img src="assets/ui/Media_Center.png" class="menupoint-icon"></img>
+                    </div>
+                    <p class="menupoint-text">MEDIA CENTER</p>
+                </div>
+                <div id="non-stations-group" style="position: fixed;
+                bottom: 0;">
+                    <div id="agenda-btn" class="menu-group" style="display: flex" onclick="agendaClick()">
+                        <div>
+                            <img src="assets/ui/Agenda-Icon.png" class="menupoint-icon"></img>
+                        </div>
+                        <p class="menupoint-text">AGENDA</p>
+                    </div>
+                    <div class="menu-group" style="display: flex" onclick="chatClick()">
+                        <div>
+                            <img src="assets/ui/Chats-Icon.png" class="menupoint-icon"></img>
+                        </div>
+                        <p class=" menupoint-text">CHAT</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%; height: 100%;position: relative;">
+        <div id="debugger">
+            <p id='debugger-fps'>fps</p>
+            <p id='debugger-text'>Nothing to select</p>
+            <p id='debugger-camera'>Current Camera</p>
+            <p id='debugger-camera-area'>no area</p>
+        </div>
+
+        <div id="station-names">
+            <p id="sn-5" class="station-names-text" style="top:38%; left:12%">Expo</p>
+            <p id="sn-1" class="station-names-text hidden-box" style="top:35%; left:22%">E-Mobility Solutions</p>
+            <p id="sn-0" class="station-names-text hidden-box" style="top:75%; left:8%">Display Solutions</p>
+            <p id="sn-2" class="station-names-text" style="top:39%; left:48%">Stage</p>
+            <p id="sn-3" class="station-names-text" style="top:47%; left:63.5%">Market Segments</p-->
+        </div>
+
+        <!--E-mobility Battery Pack Layer 1-->
+        <div class="overlay-blocker close">
+            <div id="software-overlay" class="emob-content layer1">
+                <div class="title-row">
+                    <div>
+                        <img class="content-nav-icon icon-close" style="left:94%" src="./assets/ui/Close.png">
+                    </div>
+                    <p class="content-title">BATTERY PACK</p>
+                </div>
+                <div class="content-row">
+                    <div class="img-box">
+                        <div class="ui-collider"></div>
+                        <img class="expo-img-part" src="./assets/ui/Battery.png"></img>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--E-mobility Battery Pack Layer 2-->
+        <div class="overlay-blocker close">
+            <div class="emob-content layer2">
+                <div class="title-row">
+                    <div>
+                        <img class="content-nav-icon icon-back" style="left:0%" src="./assets/ui/Back.png">
+                        <img class="content-nav-icon icon-close" style="left:94%" src="./assets/ui/Close.png">
+                    </div>
+                    <p class="content-title">BATTERY PACK</p>
+                </div>
+                <div class="content-row" style="display: flex;">
+                    <div class="img-box">
+                        <img class="expo-img-part" src="./assets/ui/Battery-active.png"></img>
+                    </div>
+                    <div class="items-box">
+                        <div class="item-group">
+                            <p class="items-text">Animated Video of Gap Filler Applied to the Battery Module Plate</p>
+                            <button id="open-video" class="button">
+                                <div class="icon-button">
+                                    <img style="max-width: 12px;" src="./assets/ui/Video-Icon.png">
+                                </div>
+                                <p class="text-button">Open Video</p>
+                            </button>
+                        </div>
+                        <div class="item-group">
+                            <p class="items-text">Animated Video of Gap Filler Applied to the Battery Module Plate</p>
+                            <button class="button" onclick="window.open('./downloadables/sell-sheet-henkel-thermal-interface-solutions-ev-battery-systems.pdf','_blank')">
+                                <div class="icon-button">
+                                    <img style="max-width: 12px;" src="./assets/ui/PDF-Icon.png">
+                                </div>
+                                <p class="text-button">Open Sell Sheet</p>
+                            </button>
+                        </div>
+                        <div class="item-group">
+                            <p class="items-text">Success Story for BERGQUIST TGF 3010APS: Silicone-Free, High-Volume
+                                Battery Thermal Management Solution</p>
+                            <button class="button" onclick="window.open('./downloadables/success-story-bergquist-tgf-3010aps-silicone-free-high-volume-battery-thermal-management-solution.pdf','_blank')">
+                                <div class="icon-button">
+                                    <img style="max-width: 12px;" src="./assets/ui/PDF-Icon.png">
+                                </div>
+                                <p class="text-button">Open Sell Sheet</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--E-mobility Battery Pack Layer 3-->
+        <div class="overlay-blocker close">
+            <div class="emob-content layer3">
+                <div class="title-row">
+                    <div>
+                        <img class="content-nav-icon icon-close" style="left:94%" src="./assets/ui/Close.png">
+                    </div>
+                    <p class="content-title">BATTERY PACK</p>
+                </div>
+                <div id="software-video-content" class="video-content">
+                    <iframe width="580" height="330" src="https://www.youtube.com/embed/G-AYEt6bmlM" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!--MARKET SEGMENTS (DYNAMIC)-->
+        <div id="overlay-ms" class="overlay-blocker close">
+            <div class="emob-content layer-ms">
+                <div class="title-row">
+                    <div>
+                        <img class="content-nav-icon icon-close" style="left:94%" src="./assets/ui/Close.png">
+                    </div>
+                    <p class="content-title">AUTOMOTIVE ELECTRONICS</p>
+                </div>
+                <div class="content-row-ms">
+                    <div class="ms-content-text">
+                        <p class="items-text">Growth in Automotive Electronics is being fueled by the trend to make cars
+                            more efficient,
+                            sustainable, comfortable, intelligent and reliable. Next-generation electronics are key to
+                            new Advanced Driver Assistance Systems (ADAS),
+                            such as cameras and radars, and existing safety and infotainment systems are becoming more
+                            elaborate and complex.
+                            Henkel provides materials for efficient assembly, protection and thermal management of
+                            electronic control units, displays, sensors,
+                            actuators and wire harnesses – to make sure they perform reliably over a maximized lifetime.
+                        </p>
+                    </div>
+                    <div class="">
+                        <img style="max-width: 100px; float:right" src="./assets/ui/auto icon.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--STAGE-->
+        <div id="howto-overlay" class="overlay-content close">
+            <div id="presentation-content">
+                <img id="quiz-screen" src="assets/ui/Quiz_00.png">
+            </div>
+        </div>
+
+        <!--AGENDA-->
+        <div id="agenda" class="overlay-blocker close">
+            <div class="emob-content layer-agenda">
+                <div class="title-row">
+                    <div>
+                        <img class="content-nav-icon icon-close" style="left:94%" src="./assets/ui/Close.png">
+                    </div>
+                    <p class="content-title">AGENDA</p>
+                </div>
+                <div class="agenda-content">
+                    <div class="agenda-row">
+                        <p class="agenda-date">09.00 - 17.00</p>
+                        <p class="agenda-text">Stations open</p>
+                    </div>
+                    <div class="agenda-line"></div>
+                    <div class="agenda-row">
+                        <p class="agenda-date">10.00 - 11.00</p>
+                        <p class="agenda-text">Henkel's Solutions for Thermal Propagation <br>Prevention presentation by
+                            XXX</p>
+                    </div>
+                    <div class="agenda-line"></div>
+                    <div class="agenda-row">
+                        <p class="agenda-date">11.00 - 15.00</p>
+                        <p class="agenda-text">Chat with a Henkel Expert</p>
+                    </div>
+                    <div class="agenda-line"></div>
+                    <div class="agenda-row" style="padding-bottom: 25px">
+                        <p class="agenda-date">15.00 - 16.00</p>
+                        <p class="agenda-text">Battery Assembly Adhesives for Battery <br>module presentation by XXX</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--CHAT-->
+        <div id="chat" class="overlay-chat close">
+            <div class="emob-content layer-chat">
+                <div class="title-row">
+                    <div>
+                        <img id="chat-x" class="content-nav-icon icon-close" style="left:88%" src="./assets/ui/Close-white.png">
+                    </div>
+                    <p class="content-title red">CHAT</p>
+                </div>
+                <div class="chat-content">
+                    <div>
+                        <img style="width: 100%" src="./assets/ui/chat_screen.JPG">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Overlay Buttons-->
+        <img id="sn-4" src="assets/ui/Home-BG-Full.png">
+
+        <!--UI FINAL-->
+        <canvas id="renderCanvas" touch-action="none"></canvas>
+
+        <!--LOADING ANIMATION-->
+        <div id="customLoadingScreenDiv">
+            <div class="container loading-balls">
+                <img class="leo-logo" src="assets/henkel logo.png">
+            </div>
+            <div class="container loading">
+                <div class="loading">
+                    <div class="loading__letter text-loading">L</div>
+                    <div class="loading__letter text-loading">o</div>
+                    <div class="loading__letter text-loading">a</div>
+                    <div class="loading__letter text-loading">d</div>
+                    <div class="loading__letter text-loading">i</div>
+                    <div class="loading__letter text-loading">n</div>
+                    <div class="loading__letter text-loading">g</div>
+                    <div class="loading__letter text-loading">.</div>
+                    <div class="loading__letter text-loading">.</div>
+                    <div class="loading__letter text-loading">.</div>
+                </div>
+            </div>
+            <div class="container progress">
+                <div class="text-progress">0%</div>
+            </div>
+            <div class="container progress">
+                <p class="text-note"><strong>Note:</strong> The virtual stand may only be browsed using Chrome,
+                    Edge,
+                    Firefox or Safari</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Pdfs Downloads-->
+    <a id="download-1" href="downloadables/doc_1.pdf" download="file1"></a>
+    <a id="download-2" href="downloadables/doc_2.pdf" download="file2"></a>
+    <a id="download-3" href="downloadables/doc_3.pdf" download="file3"></a>
+    <a id="download-4" href="downloadables/doc_4.pdf" download="file4"></a>
+    <a id="download-5" href="downloadables/doc_5.pdf" download="file5"></a>
+    <a id="download-6" href="downloadables/doc_6.pdf" download="file6"></a>
+    <a id="download-7" href="downloadables/doc_7.pdf" download="file7"></a>
+
+
+    <script type="text/javascript" src='js/HelperFunctions.js'></script>
+    <script type="text/javascript" src='js/MeshLoaderCtrl.js'></script>
+    <script type="text/javascript" src='js/MaterialManager.js'></script>
+    <script type="text/javascript" src='js/CameraCreator.js'></script>
+    <script type="text/javascript" src='js/CameraController.js'></script>
+    <script type="text/javascript" src='js/AnimationManager.js'></script>
+    <script type="text/javascript" src='js/QuizManager.js'></script>
+    <script type="text/javascript" src='js/InputController.js'></script>
+    <script type="text/javascript" src='js/index.js'></script>
+
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+.menu-group {
+    display: flex;
+    align-items: center;
+    background-color: rgba(137, 43, 226, 0.0);
+    margin-left: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.menu-group.hidden-box {
+    display: none;
+}
+
+.menupoint-text {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    padding-left: 10px;
+    color: #ffffff;
+    margin: 0px;
+}
+
+.menupoint-text.sub {
+    font-size: 8px;
+}
+
+.menupoint-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    padding-left: 20px;
+    color:aliceblue;
+}
+
+.material-icons.navbar-menu-icon{
+        font-size: 20px;
+        color: var(--leo-gray-color);
+        padding: 10px;
+        pointer-events: auto;
+        cursor: pointer;
+}
+
+.menupoint-icon{
+    height: 15px; 
+    width: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.no-click {
+    /*avoid text Highlioghting*/
+    pointer-events: none;
+    cursor: none;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                      supported by Chrome, Edge, Opera and Firefox */
+}
+
+#station-names {
+    background-color: #ffffff;
+    opacity: 1
+}
+
+.station-names-text {
+    position: absolute;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px;
+    color: #E1000F;
+    background-color: #ffffff;
+    margin: 0px;
+
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+#sn-4{
+    position: absolute;
+    top: 90%;
+    max-width: 48px;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 2;
+}
