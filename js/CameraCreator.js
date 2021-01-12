@@ -59,7 +59,7 @@ function CreateWalkerCam(scene) {
     //camPos.x = 42
 
     // Targets the camera to a particular position. In this case the scene origin
-    walkerCam.setTarget(new BABYLON.Vector3(0, 20, 0));
+    walkerCam.setTarget(new BABYLON.Vector3(0, 21.076, 0));
     //different sensibilit for mobile and desktop
     if (isMobileDevice()){
         alert("hello mobile")
