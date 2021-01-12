@@ -99,7 +99,10 @@
         padding: 15px;
     }
     #sn-3{
-        top:47.4% !important;
-        left:63.8% !important;
+        top: 48.2% !important;
+        left: 63.8% !important;
+    }
+    #sn-2{
+        top: 40% !important;
     }
 }
