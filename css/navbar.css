@@ -93,3 +93,13 @@
     cursor: pointer;
     z-index: 2;
 }
+
+@media all and (display-mode: fullscreen) {
+    .station-names-text {
+        padding: 14px;
+    }
+    #sn-3{
+        top:47.5% !important;
+        left:63.8%
+    }
+}
